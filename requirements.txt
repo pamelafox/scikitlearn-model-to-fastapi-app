@@ -1,0 +1,2 @@
+-r function/requirements.txt
+-r notebook/requirements.txt
