@@ -49,6 +49,3 @@ azd deploy
 ## Feedback!?
 
 If you have any issues going through this repository, you can use the discussions tab on this repo or tweet at @pamelafox.
-
-
-

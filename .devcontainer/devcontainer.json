@@ -37,7 +37,7 @@
         3100
     ],
     "postCreateCommand": "pip3 install --user -r requirements-dev.txt && pre-commit install",
-    
+
     "remoteUser": "vscode",
     "hostRequirements": {
         "memory": "8gb"

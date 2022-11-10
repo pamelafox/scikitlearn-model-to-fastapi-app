@@ -1,5 +1,10 @@
 -r requirements.txt
+pandas
 isort
 black
 pyflakes
+pyupgrade
 pytest
+coverage
+pytest-cov
+pre-commit

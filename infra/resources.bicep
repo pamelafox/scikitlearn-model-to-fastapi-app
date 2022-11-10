@@ -55,7 +55,7 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2020-10-01' = {
     reserved: true
   }
   sku: {
-    name: 'Y1' 
+    name: 'Y1'
   }
 }
 
