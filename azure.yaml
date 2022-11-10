@@ -3,6 +3,6 @@
 name: prediction-model-function
 services:
   api:
-    project: function/
+    project: api/
     language: py
     host: function

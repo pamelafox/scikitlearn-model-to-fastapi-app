@@ -37,18 +37,17 @@ categorical_features = ["EdLevel", "MainBranch", "Country"]
 for col_name in categorical_features:
     survey_data = survey_data.dropna(subset=[col_name])
 
-
 # Separate features and labels
-X = survey_data[categorical_features + numeric_features].values
+X = survey_data[numeric_features + categorical_features].values
 y = survey_data[label].values
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=0)
 
 # Define preprocessing for numeric columns (scale them)
-numeric_features_indices = [0, 1]
+numeric_features_indices = list(range(0, len(numeric_features)))
 numeric_transformer = Pipeline(steps=[("scaler", StandardScaler())])
 
 # Define preprocessing for categorical features (encode them)
-categorical_features_indices = [2, 3, 4]
+categorical_features_indices = list(range(len(numeric_features), len(numeric_features) + len(categorical_features)))
 categorical_transformer = Pipeline(steps=[("onehot", OneHotEncoder(handle_unknown="ignore"))])
 
 # Combine preprocessing steps
@@ -63,5 +62,5 @@ preprocessor = ColumnTransformer(
 pipeline = Pipeline(steps=[("preprocessor", preprocessor), ("regressor", GradientBoostingRegressor(n_estimators=50))])
 model = pipeline.fit(X_train, (y_train))
 
-api_path = pathlib.Path(__file__).resolve() / "api/model_predict/"
+api_path = pathlib.Path(__file__).resolve().parent / "api/model_predict/"
 api_generator.generate_fastapi(survey_data, numeric_features, categorical_features, model, api_path)

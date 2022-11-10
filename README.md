@@ -1,29 +1,54 @@
 # Building a regression model and deploying to Azure
 
-This repository was built for a #30DaysOfDataScience talk that demonstrates how to build a regression model using sci-kit learn and then deploy it as an HTTP API to Azure Functions.
+This project turns a scikit-learn regression model into an HTTP API using the FastAPI framework,
+and deploys it to Azure functions using the Azure Developer CLI.
 
-Technologies used: Jupyter notebook, pandas, scikit-learn, numpy, matplotlib, joblib, Azure functions, Azure Developer CLI, FastAPI
+Technologies used: pandas, scikit-learn, numpy, matplotlib, joblib, Azure functions, Azure Developer CLI, FastAPI
 
-## The slides
+## From model to API
 
-The slides are viewable online here:
-[tinyurl.com/regression-slides](https://pamelafox.github.io/regression-model-azure-demo/notebook/)
+The `api_gen` folder contains functionality that can process a scikit-learn regression model and output FastAPI function code.
 
-The slides are generated using a Github action that runs `nbconvert` on `notebook/index.ipynb`.
-Locally, you can use [RISE](https://rise.readthedocs.io/en/stable/) to view the notebook as slides.
+It's used like this:
 
-## The function
+```python
+import api_generator
 
-The `function` folder contains the code necessary to turn the pickled regression model into an Azure function:
+api_generator.generate_fastapi(data, numeric_features, categorical_features, model, api_path)
+```
+
+where the parameter types are:
+
+| Parameter            | Type                       |
+| -------------------- |:-------------:             |
+| data                 | `pandas` data frame        |
+| numeric_features     | `iterable` of column names |
+| categorical_features | `iterable` of column names |
+| model                | `scikit-learn` model       |
+| api_path             | `pathlib` Path             |
+
+To try it yourself, modify `main.py` and run it. That will update files in the `api` folder.
+
+## The API
+
+The `api` folder contains the FastAPI code and function configuration that will actually get deployed to Azure functions.
 
 * `__init__.py`: The main Python code that uses FastAPI to setup the `model_predict` API endpoint
 * `categories.py`: The values of the enums for `model_predict` (generated from the `categorical features` in the notebook)
 * `model.pkl`: The pickled regression model
 * `function.json`: Configuration JSON needed for Azure functions
 
+## Local testing
+
+The Azure function can be tested locally using the [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Cpython%2Cportal%2Cbash&WT.mc_id=python-79071-pamelafox).
+
+1. Navigate to the `api` directory
+2. Run `func host start`
+3. Modify the path of the URL to `/docs`. That shows the auto-generated FastAPI docs, where you can play with the parameters and generate URLs for any API calls.
+
 ## Deployment
 
-The function can be deployed using the [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview?WT.mc_id=python-79071-pamelafox). The `azd` CLI uses these files:
+The Azure function can be deployed using the [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview?WT.mc_id=python-79071-pamelafox). The `azd` CLI uses these files:
 
 * `infra`:
   * `main.bicep`: Creates an Azure resource group and passes parameters to `resources.bicep`
