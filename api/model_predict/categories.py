@@ -1,0 +1,13 @@
+from enum import Enum
+
+class Country(str, Enum):
+    Country_0 = "Australia"
+    Country_1 = "Brazil"
+    Country_2 = "Portugal"
+
+
+class EdLevel(str, Enum):
+    EdLevel_0 = "Bachelors degree"
+    EdLevel_1 = "High school"
+    EdLevel_2 = "Masters degree"
+

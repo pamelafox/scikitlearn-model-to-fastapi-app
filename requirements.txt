@@ -1,2 +1,5 @@
--r function/requirements.txt
--r notebook/requirements.txt
+azure-functions
+joblib
+fastapi
+nest_asyncio
+scikit-learn
