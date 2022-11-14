@@ -106,4 +106,29 @@ resource functionApp 'Microsoft.Web/sites@2020-06-01' = {
   }
 }
 
-output application_url string = functionApp.properties.hostNames[0]
+module apiManagementResources 'apimanagement.bicep' = {
+  name: 'applicationinsights-resources'
+  params: {
+    prefix: prefix
+    location: location
+    tags: tags
+    functionAppName: functionApp.name
+    functionAppUrl: functionApp.properties.hostNames[0]
+    functionAppId: functionApp.id
+    functionAppKey: functionApp.listKeys().keys[0].value
+    appInsightsName: appInsights.name
+    appInsightsId: appInsights.id
+    appInsightsKey: appInsights.properties.InstrumentationKey
+  }
+}
+
+resource functionAppProperies 'Microsoft.Web/sites/config@2022-03-01' = {
+  name: 'web'
+  kind: 'string'
+  parent: functionApp
+  properties: {
+      apiManagementConfig: {
+        id: '${apiManagementResources.outputs.apimServiceID}/apis/model-prediction-api'
+      }
+  }
+}
