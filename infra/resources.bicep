@@ -122,6 +122,7 @@ module apiManagementResources 'apimanagement.bicep' = {
   }
 }
 
+
 resource functionAppProperies 'Microsoft.Web/sites/config@2022-03-01' = {
   name: 'web'
   kind: 'string'
@@ -131,4 +132,7 @@ resource functionAppProperies 'Microsoft.Web/sites/config@2022-03-01' = {
         id: '${apiManagementResources.outputs.apimServiceID}/apis/model-prediction-api'
       }
   }
+  dependsOn: [
+    apiManagementResources
+  ]
 }
