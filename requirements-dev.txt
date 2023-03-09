@@ -1,10 +1,9 @@
 -r api/requirements.txt
 pandas
-isort
 black
-pyflakes
-pyupgrade
+ruff
 pytest
 coverage
 pytest-cov
 pre-commit
+fastapi[all]

@@ -1,5 +1,5 @@
-azure-functions
-joblib
-fastapi
-nest_asyncio
-scikit-learn
+fastapi==0.93.0
+joblib==1.2.0
+scikit-learn==1.1.3
+uvicorn[standard]==0.17.*
+gunicorn==20.1.0

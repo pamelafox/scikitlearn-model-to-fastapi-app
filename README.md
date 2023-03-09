@@ -46,6 +46,8 @@ The Azure function can be tested locally using the [Azure Functions Core Tools](
 2. Run `func host start`
 3. Modify the path of the URL to `/docs`. That shows the auto-generated FastAPI docs, where you can play with the parameters and generate URLs for any API calls.
 
+gunicorn api.model_predict.app:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:80
+
 ## Deployment
 
 The Azure function can be deployed using the [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview?WT.mc_id=python-79071-pamelafox). The `azd` CLI uses these files:
