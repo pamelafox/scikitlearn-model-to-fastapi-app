@@ -46,11 +46,11 @@ def generate_enums(data, categorical_features):
             enums_lines.append(f'    {enum_name} = "{value}"')
         enums_lines.append("\n")
 
-    enums_module = "from enum import Enum\n\n" + "\n".join(enums_lines)
+    enums_module = "from enum import Enum\n\n\n" + "\n".join(enums_lines)[:-1]
     return enums_module
 
 
-def generate_function(numeric_features, categorical_features):
+def generate_routes(numeric_features, categorical_features):
     params = {}
     params_list = []
     for feature in numeric_features:
@@ -65,7 +65,7 @@ def generate_function(numeric_features, categorical_features):
     features_params = json.dumps(params).replace('"', "").replace("{", "").replace("}", "")
     features_list = ", ".join(params_list)
 
-    function_template_filename = os.path.join(os.path.dirname(__file__), "function_template.py.txt")
+    function_template_filename = os.path.join(os.path.dirname(__file__), "routes.py.txt")
     function_template_file = open(function_template_filename)
     function_template = Template(function_template_file.read())
     function_template_file.close()
@@ -80,6 +80,6 @@ def generate_fastapi(data, numeric_features, categorical_features, model, api_pa
     with open(enums_path, "w") as enums_file:
         enums_file.write(generate_enums(data, categorical_features))
 
-    init_path = api_path / "__init__.py"
+    init_path = api_path / "routes.py"
     with open(init_path, "w") as init_file:
-        init_file.write(generate_function(numeric_features, categorical_features))
+        init_file.write(generate_routes(numeric_features, categorical_features))

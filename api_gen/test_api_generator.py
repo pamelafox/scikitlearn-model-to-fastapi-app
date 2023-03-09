@@ -50,10 +50,11 @@ def test_generate_enums(mock_data, mock_categorical_features):
     assert enums_module == open(test_enums_file_path).read()
 
 
-def test_generate_function(mock_numeric_features, mock_categorical_features):
-    function_module = api_generator.generate_function(mock_numeric_features, mock_categorical_features)
-    test_function_file_path = pathlib.Path(__file__).resolve().parent / "test_function_file.py.txt"
-    assert function_module == open(test_function_file_path).read()
+def test_generate_routes(mock_numeric_features, mock_categorical_features):
+    routes_file = api_generator.generate_routes(mock_numeric_features, mock_categorical_features)
+    test_routes_file_path = pathlib.Path(__file__).resolve().parent / "test_routes_file.py.txt"
+    print(routes_file)
+    assert routes_file == open(test_routes_file_path).read()
 
 
 def test_generate_fastapi(mock_data, mock_numeric_features, mock_categorical_features, tmp_path):
@@ -90,4 +91,4 @@ def test_generate_fastapi(mock_data, mock_numeric_features, mock_categorical_fea
     assert tmp_path.is_dir()
     assert (tmp_path / "model.pkl").is_file()
     assert (tmp_path / "categories.py").is_file()
-    assert (tmp_path / "__init__.py").is_file()
+    assert (tmp_path / "routes.py").is_file()

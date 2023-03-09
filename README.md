@@ -33,24 +33,24 @@ To try it yourself, modify `main.py` and run it. That will update files in the `
 
 The `api` folder contains the FastAPI code and function configuration that will actually get deployed to Azure functions.
 
-* `__init__.py`: The main Python code that uses FastAPI to setup the `model_predict` API endpoint
+* `app.py`: The FastAPI app, including a startup event that loads the model
+* `routes.py`: Defines the `model_predict` API endpoint
 * `categories.py`: The values of the enums for `model_predict` (generated from the `categorical features` in the notebook)
 * `model.pkl`: The pickled regression model
-* `function.json`: Configuration JSON needed for Azure functions
 
 ## Local testing
 
-The Azure function can be tested locally using the [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Cpython%2Cportal%2Cbash&WT.mc_id=python-79071-pamelafox).
+The FastAPI app can be run locally using gunicorn and a uvicorn worker
 
-1. Navigate to the `api` directory
-2. Run `func host start`
-3. Modify the path of the URL to `/docs`. That shows the auto-generated FastAPI docs, where you can play with the parameters and generate URLs for any API calls.
-
+```
 gunicorn api.model_predict.app:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:80
+```
+
+Once the app is running, navigate to "/docs" to try out the API.
 
 ## Deployment
 
-The Azure function can be deployed using the [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview?WT.mc_id=python-79071-pamelafox). The `azd` CLI uses these files:
+The Azure app can be deployed using the [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview?WT.mc_id=python-79071-pamelafox). The `azd` CLI uses these files:
 
 * `infra`:
   * `main.bicep`: Creates an Azure resource group and passes parameters to `resources.bicep`

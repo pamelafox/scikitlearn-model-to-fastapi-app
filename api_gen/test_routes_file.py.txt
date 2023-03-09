@@ -1,0 +1,11 @@
+import numpy
+
+from . import categories
+from .app import app, models
+
+
+@app.get("/model_predict")
+async def model_predict(years_code: int, years_code_pro: int, country: categories.Country, ed_level: categories.EdLevel):
+    X_new = numpy.array([[years_code, years_code_pro, country.value, ed_level.value]])
+    result = models["predicter"].predict(X_new)
+    return {"prediction": round(result[0], 2)}

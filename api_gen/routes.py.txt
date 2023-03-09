@@ -1,0 +1,11 @@
+import numpy
+
+from . import categories
+from .app import app, models
+
+
+@app.get("/model_predict")
+async def model_predict($features_params):
+    X_new = numpy.array([[$features_list]])
+    result = models["predicter"].predict(X_new)
+    return {"prediction": round(result[0], 2)}

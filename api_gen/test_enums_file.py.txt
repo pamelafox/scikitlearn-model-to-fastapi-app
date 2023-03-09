@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Country(str, Enum):
     Country_0 = "Australia"
     Country_1 = "Brazil"
