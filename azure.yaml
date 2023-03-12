@@ -5,4 +5,4 @@ services:
   api:
     project: api/
     language: py
-    host: function
+    host: appservice

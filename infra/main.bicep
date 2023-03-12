@@ -18,15 +18,47 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   tags: tags
 }
 
-module resources 'resources.bicep' = {
-  name: 'resources'
+var prefix = '${name}-${resourceToken}'
+
+module web 'core/host/appservice.bicep' = {
+  name: 'appservice'
   scope: resourceGroup
   params: {
-    name: name
+    name: '${prefix}-appservice'
     location: location
-    resourceToken: resourceToken
+    tags: union(tags, { 'azd-service-name': 'api' })
+    appServicePlanId: appServicePlan.outputs.id
+    appCommandLine: 'python3 -m gunicorn --workers 2 --threads 1 --timeout 60 --access-logfile "-" --error-logfile "-" --bind=0.0.0.0:8000 -k uvicorn.workers.UvicornWorker model_predict.app:app'
+    runtimeName: 'python'
+    runtimeVersion: '3.10'
+    scmDoBuildDuringDeployment: true
+    ftpsState: 'Disabled'
+  }
+}
+
+module appServicePlan 'core/host/appserviceplan.bicep' = {
+  name: 'serviceplan'
+  scope: resourceGroup
+  params: {
+    name: '${prefix}-serviceplan'
+    location: location
+    tags: tags
+    sku: {
+      name: 'B1'
+    }
+    reserved: true
+  }
+}
+
+module logAnalyticsWorkspace 'core/monitor/loganalytics.bicep' = {
+  name: 'loganalytics'
+  scope: resourceGroup
+  params: {
+    name: '${prefix}-loganalytics'
+    location: location
     tags: tags
   }
 }
 
+output WEB_URI string = 'https://${web.outputs.uri}'
 output AZURE_LOCATION string = location
