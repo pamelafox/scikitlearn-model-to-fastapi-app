@@ -19,4 +19,4 @@ jobs:
       - name: Build Bicep for linting
         uses: azure/CLI@v1
         with:
-          inlineScript: az bicep build -f infra/main.bicep --stdout
+          inlineScript: az config set bicep.use_binary_from_path=false && az bicep build -f infra/main.bicep
