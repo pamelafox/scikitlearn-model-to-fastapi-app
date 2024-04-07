@@ -42,15 +42,15 @@ The `api` folder contains the FastAPI code and function configuration that will 
 
 The FastAPI app can be run locally using gunicorn and a uvicorn worker
 
-```
-gunicorn api.model_predict.app:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:80
+```shell
+python -m gunicorn api.model_predict.app:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:80
 ```
 
 Once the app is running, navigate to "/docs" to try out the API.
 
 ## Deployment
 
-The Azure app can be deployed using the [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview?WT.mc_id=python-79071-pamelafox). The `azd` CLI uses these files:
+The Azure app can be deployed using the [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/overview). The `azd` CLI uses these files:
 
 * `infra`:
   * `main.bicep`: Creates an Azure resource group and passes parameters to `resources.bicep`
