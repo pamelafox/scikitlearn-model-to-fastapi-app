@@ -43,7 +43,7 @@ The `api` folder contains the FastAPI code and function configuration that will 
 The FastAPI app can be run locally using gunicorn and a uvicorn worker
 
 ```shell
-python -m gunicorn api.model_predict.app:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:80
+python -m gunicorn api.model_predict.app:app --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8888
 ```
 
 Once the app is running, navigate to "/docs" to try out the API.
