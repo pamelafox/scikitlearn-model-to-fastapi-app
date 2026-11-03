@@ -4,7 +4,7 @@
 		"dockerfile": "Dockerfile",
 		"context": "..",
 		"args": {
-			"IMAGE": "python:3.10"
+			"IMAGE": "python:3.11"
 		}
 	},
     "features": {

@@ -30,7 +30,7 @@ module web 'core/host/appservice.bicep' = {
     appServicePlanId: appServicePlan.outputs.id
     appCommandLine: 'python3 -m gunicorn --workers 2 --threads 1 --timeout 60 --access-logfile "-" --error-logfile "-" --bind=0.0.0.0:8000 -k uvicorn.workers.UvicornWorker model_predict.app:app'
     runtimeName: 'python'
-    runtimeVersion: '3.10'
+    runtimeVersion: '3.11'
     scmDoBuildDuringDeployment: true
     ftpsState: 'Disabled'
   }
